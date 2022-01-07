@@ -1,4 +1,5 @@
-FROM debian:bullseye-slim
+FROM wordpress:5.8-apache
+# FROM debian:bullseye
 
 VOLUME ["/var/log", "/var/spool/postfix"]
 
@@ -11,11 +12,12 @@ RUN apt-get update && \
     apt-get upgrade -yqq && \
     echo "postfix postfix/mailname string $MAILNAME" | debconf-set-selections && \
     echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
-    apt-get install -yqq postfix rsyslog iproute2 wget && \
+    apt-get install -yqq postfix rsyslog iproute2 wget libsasl2-modules && \
     apt-get clean -yqq && \
     apt-get autoclean -yqq && \
     apt-get autoremove -yqq && \
-    rm -rf /var/cache/apt/archives/* /var/cache/apt/*.bin /var/lib/apt/lists/*
+    rm -rf /var/cache/apt/archives/* /var/cache/apt/*.bin /var/lib/apt/lists/* \
+    update-ca-certificates
 
 ADD postfix-entrypoint sendmail_test /usr/local/bin/
 
