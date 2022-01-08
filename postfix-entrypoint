@@ -23,12 +23,30 @@ _log() {
 _stop() {
     /etc/init.d/postfix stop
     /etc/init.d/rsyslog stop
-    _log "Docker entrypoint stop"
+    _log "Postfix init script stop"
 }
 
 trap "_stop" SIGINT SIGTERM SIGHUP
 
-_log "Docker entrypoint start"
+_log "Postfix init script start"
+
+apt-get update && \
+apt-get upgrade -yqq && \
+echo "postfix postfix/mailname string $MAILNAME" | debconf-set-selections && \
+echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
+apt-get install -yqq postfix rsyslog iproute2 wget libsasl2-modules && \
+apt-get clean -yqq && \
+apt-get autoclean -yqq && \
+apt-get autoremove -yqq && \
+rm -rf /var/cache/apt/archives/* /var/cache/apt/*.bin /var/lib/apt/lists/* && \
+update-ca-certificates
+
+chmod a+rx /usr/local/bin/* && \
+postconf -e smtp_tls_CAfile=/etc/ssl/certs/ca-certificates.crt && \
+postconf -e smtp_tls_security_level=may && \
+postconf -e smtp_sasl_auth_enable=yes && \
+postconf -e smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd && \
+postconf -e smtp_sasl_security_options=noanonymous
 
 # Mail relay host
 if [ -n "$MAIL_RELAY_HOST" ] && [ -z "$MAIL_RELAY_PORT" ]; then
@@ -46,7 +64,7 @@ else
     exit 1;
 fi
 
-_log "Docker entrypoint configured"
+_log "Postfix init script configured"
 
 # Start syslog daemon
 /etc/init.d/rsyslog start
