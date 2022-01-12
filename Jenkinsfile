@@ -34,18 +34,18 @@ pipeline {
                 sh("docker push ${img}:latest")
             }
         }
-        withCredentials([sshUserPrivateKey(credentialsId: '1f6af17f-a4a8-404f-83b1-1084a3eed6a2', keyFileVariable: 'keyfile')]) {
             stage('Deploy to server') {
                 when {
                     branch 'main'
                 }
-                steps {
-                    sh "ssh -o StrictHostKeyChecking=no -i ${keyfile} jenkins@107.152.35.191"
-                    sh 'touch iwashere.txt'
-                    sh 'exit'
+                withCredentials([sshUserPrivateKey(credentialsId: '1f6af17f-a4a8-404f-83b1-1084a3eed6a2', keyFileVariable: 'keyfile')]) {
+                    steps {
+                        sh "ssh -o StrictHostKeyChecking=no -i ${keyfile} jenkins@107.152.35.191"
+                        sh 'touch iwashere.txt'
+                        sh 'exit'
+                    }
                 }
             }
-        }
 
         // stage('Deploy to Kubernetes') {
         //     when {
