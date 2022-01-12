@@ -41,7 +41,7 @@ pipeline {
                 steps {
                     withCredentials([sshUserPrivateKey(credentialsId: '1f6af17f-a4a8-404f-83b1-1084a3eed6a2', keyFileVariable: 'keyfile')]) {
                         sh "ssh -o StrictHostKeyChecking=no -i ${keyfile} jenkins@107.152.35.191 && \
-                        touch iwashere.txt"
+                        echo 'bbz kas vykesta' > iwashere.txt"
                     }
                 }
             }
