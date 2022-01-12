@@ -26,6 +26,3 @@ services:
       MAIL_RELAY_PORT: 587
       MAIL_RELAY_USER: simasbutavicius
       MAIL_RELAY_PASS: jtnixegxjetgyjdt
-volumes:
-  db_data: {}
-  wordpress_data: {}
