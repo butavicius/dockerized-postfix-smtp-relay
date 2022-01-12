@@ -30,10 +30,16 @@ pipeline {
             }
 
             steps {
-                container('docker') {
-                    sh("set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x")
-                    sh("docker push ${img}:latest")
-                }
+                sh("set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x")
+                sh("docker push ${img}:latest")
+            }
+        }
+        stage('Deploy to server') {
+            when {
+                branch 'main'
+            }
+
+            steps {
             }
         }
 
