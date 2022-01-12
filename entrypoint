@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -e
+
+_add_line() {
+    local check="$1"
+    local line="$2"
+    local file="$3"
+    if ! grep -q "$check" "$file"; then
+        echo "$line" >> "$file"
+    fi
+}
+
+_stop() {
+    /etc/init.d/postfix stop
+    /etc/init.d/rsyslog stop
+    _log "Postfix init script stop"
+}
+
+trap "_stop" SIGINT SIGTERM SIGHUP
+
+# Mail relay host
+if [ -n "$MAIL_RELAY_HOST" ] && [ -z "$MAIL_RELAY_PORT" ]; then
+    postconf -e relayhost=$MAIL_RELAY_HOST;
+fi
+if [ -n "$MAIL_RELAY_HOST" ] && [ -n "$MAIL_RELAY_PORT" ]; then
+    postconf -e relayhost="$MAIL_RELAY_HOST:$MAIL_RELAY_PORT";
+fi
+if [ -n "$MAIL_RELAY_HOST" ] && [ -n "$MAIL_RELAY_USER" ] && [ -n "$MAIL_RELAY_PASS" ]; then
+    touch /etc/postfix/sasl_passwd
+    _add_line "$MAIL_RELAY_HOST" "$MAIL_RELAY_HOST $MAIL_RELAY_USER:$MAIL_RELAY_PASS" /etc/postfix/sasl_passwd
+    postmap /etc/postfix/sasl_passwd
+else
+    echo '$MAIL_RELAY_HOST, $MAIL_RELAY_USER or $MAIL_RELAY_PASS is not set. Can not configure postfix. Exiting';
+    exit 1;
+fi
+
+# Start syslog daemon
+/etc/init.d/rsyslog start
+
+# Start Postfix daemon
+/etc/init.d/postfix start
+
+# Start wordpress
+/usr/local/bin/docker-entrypoint.sh apache2-foreground
+
+# $@ & wait ${!}

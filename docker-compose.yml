@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: arst
+      MYSQL_DATABASE: wordpress
+  wordpress:
+    depends_on:
+      - db
+    build: .
+    volumes:
+      - ./wordpress_data:/var/www/html
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DEBUG: 'true' 
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: arst
+      WORDPRESS_DB_NAME: wordpress
+      MAIL_RELAY_HOST: smtp.gmail.com
+      MAIL_RELAY_PORT: 587
+      MAIL_RELAY_USER: simasbutavicius
+      MAIL_RELAY_PASS: jtnixegxjetgyjdt
+volumes:
+  db_data: {}
+  wordpress_data: {}
