@@ -34,14 +34,14 @@ pipeline {
                 sh("docker push ${img}:latest")
             }
         }
-        stage('Deploy to server') {
-            when {
-                branch 'main'
-            }
+        // stage('Deploy to server') {
+        //     when {
+        //         branch 'main'
+        //     }
 
-            steps {
-            }
-        }
+        //     steps {
+        //     }
+        // }
 
         // stage('Deploy to Kubernetes') {
         //     when {
