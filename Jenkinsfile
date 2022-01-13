@@ -1,7 +1,5 @@
-acrUrl = 'butavicius' // container registry account
-app = 'wordpress-test' // application name
-
-img = "${acrUrl}/${app}"
+img = 'butavicius/wordpress-test'
+repo = ''
 
 pipeline {
     agent any
@@ -39,30 +37,11 @@ pipeline {
                     branch 'main'
                 }
                 steps {
-                    withCredentials([sshUserPrivateKey(credentialsId: '1f6af17f-a4a8-404f-83b1-1084a3eed6a2', keyFileVariable: 'keyfile')]) {
-                        sh "ssh -o StrictHostKeyChecking=no -i ${keyfile} jenkins@107.152.35.191 \
-                        'cp yupa.txt yupa3.txt && touch iwashere.txt'"
-                    }
+                    sh "ssh -o StrictHostKeyChecking=no jenkins@107.152.35.191 \
+                    'cp yupa.txt yupa5.txt && \
+                    touch iwashere3.txt && \
+                    '"
                 }
             }
-
-        // stage('Deploy to Kubernetes') {
-        //     when {
-        //         branch 'master'
-        //     }
-
-    //     steps {
-    //         container('kubectl') {
-    //             sh """
-    //      helm upgrade --install ${team}-${app} ./helm/deployment \
-    //      -f ./helm/values.yaml --namespace ${team} \
-    //      --set nameOverride=${app} \
-    //      --set container.image=${img} \
-    //      --set service.ingress.hostname=${hostname} \
-    //      --set service.ingress.paths[0]=/api
-    //       """
-    //         }
-    //     }
-    // }
     }
 }
