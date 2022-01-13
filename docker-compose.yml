@@ -10,7 +10,7 @@ services:
   wordpress:
     depends_on:
       - db
-    build: .
+    image: butavicius/wordpress-test
     volumes:
       - ./wp-content:/var/www/html/wp-content
     ports:
