@@ -38,7 +38,9 @@ pipeline {
                 }
                 steps {
                     sh("rsync -rz ./* jenkins@${prodServer}:/home/jenkins/repo")
-                    sh("ssh jenkins@${prodServer} \"set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x;\"")
+                    sh("ssh jenkins@${prodServer} \"set +x && \
+                        docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD && \
+                        set -x && cd repo && docker-compose up -d\"")
                 }
             }
     }
