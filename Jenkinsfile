@@ -1,5 +1,4 @@
 img = 'butavicius/wordpress-test'
-repo = ''
 prodServer = '107.152.35.191'
 
 pipeline {

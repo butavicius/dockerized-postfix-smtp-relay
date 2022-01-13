@@ -2,27 +2,32 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - ./db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     restart: always
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: arst
       MYSQL_DATABASE: wordpress
   wordpress:
     depends_on:
       - db
     image: butavicius/wordpress-test
     volumes:
-      - ./wp-content:/var/www/html/wp-content
+      - ./wp-themes:/var/www/html/wp-content/themes
+      - ./wp-plugins:/var/www/html/wp-content/plugins
+      - ./apache-sites-enabled:/etc/apache2/sites-enabled
+      - certbot_data:/etc/letsencrypt
     ports:
       - "80:80"
+      - "443:443"
     restart: always
+    env_file:
+      - .env
     environment:
-      WORDPRESS_DEBUG: 'true' 
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: arst
-      WORDPRESS_DB_NAME: wordpress
-      MAIL_RELAY_HOST: smtp.gmail.com
-      MAIL_RELAY_PORT: 587
-      MAIL_RELAY_USER: simasbutavicius
-      MAIL_RELAY_PASS: jtnixegxjetgyjdt
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  certbot_data: null
+  db_data: null
