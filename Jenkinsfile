@@ -38,8 +38,7 @@ pipeline {
                     branch 'main'
                 }
                 steps {
-                    sh "echo 'files are followingas'"
-                    sh "rsync -rz ./* jenkins@${prodServer}"
+                    sh "rsync -rz ./* jenkins@${prodServer}:/home/jenkins"
                 }
             }
     }
