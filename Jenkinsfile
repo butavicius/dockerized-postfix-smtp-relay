@@ -39,9 +39,7 @@ pipeline {
                 }
                 steps {
                     sh "echo 'files are followingas'"
-                    sh "rsync"
-                    sh "ssh -o StrictHostKeyChecking=no jenkins@${prodServer} \
-                    touch iwasheRe3.txt"
+                    sh "rsync -rz ./* jenkins@${prodServer}"
                 }
             }
     }
