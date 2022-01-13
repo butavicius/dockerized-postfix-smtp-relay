@@ -37,8 +37,8 @@ pipeline {
                     branch 'main'
                 }
                 steps {
-                    sh "rsync -rz ./* jenkins@${prodServer}:/home/jenkins"
-                    sh("ssh jenkins@${prodServer} \"set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x; echo \$DOCKER_USERNAME\"")
+                    sh("rsync -rz ./* jenkins@${prodServer}:/home/jenkins/repo")
+                    sh("ssh jenkins@${prodServer} \"set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x;\"")
                 }
             }
     }
