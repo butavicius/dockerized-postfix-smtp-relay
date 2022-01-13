@@ -39,8 +39,7 @@ pipeline {
                 steps {
                     sh "ssh -o StrictHostKeyChecking=no jenkins@107.152.35.191 \
                     'cp yupa.txt yupa5.txt && \
-                    touch iwashere3.txt && \
-                    '"
+                    touch iwashere3.txt'"
                 }
             }
     }
