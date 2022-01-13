@@ -38,7 +38,7 @@ pipeline {
                     branch 'main'
                 }
                 steps {
-                    sh "echo 'files are following'"
+                    sh "echo 'files are followingas'"
                     sh "ls -al"
                     sh "ssh -o StrictHostKeyChecking=no jenkins@${prodServer} \
                     touch iwasheRe3.txt"
