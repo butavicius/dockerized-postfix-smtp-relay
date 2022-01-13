@@ -5,7 +5,7 @@ services:
       - db_data:/var/lib/mysql
     restart: always
     env_file:
-      - .env
+      - ./.env
     environment:
       MYSQL_DATABASE: wordpress
   wordpress:
@@ -22,7 +22,7 @@ services:
       - "443:443"
     restart: always
     env_file:
-      - .env
+      - ./.env
     environment:
       - WORDPRESS_DB_HOST=db:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
