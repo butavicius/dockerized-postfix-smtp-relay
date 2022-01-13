@@ -41,8 +41,7 @@ pipeline {
                     sh "echo 'files are following'"
                     sh "ls -al"
                     sh "ssh -o StrictHostKeyChecking=no jenkins@${prodServer} \
-                    'cp yupa.txt yupa5.txt && \
-                    touch iwasheRe3.txt'"
+                    touch iwasheRe3.txt"
                 }
             }
     }
