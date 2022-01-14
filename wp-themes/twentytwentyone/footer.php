@@ -57,7 +57,7 @@
 				<?php
 				printf(
 					/* translators: %s: WordPress. */
-					esc_html__( 'Proudly powered by edited again for k8s %s.', 'twentytwentyone' ),
+					esc_html__( 'Proudly powered by edited again for k8s without docker %s.', 'twentytwentyone' ),
 					'<a href="' . esc_url( __( 'https://wordpress.org/', 'twentytwentyone' ) ) . '">WordPress</a>'
 				);
 				?>
