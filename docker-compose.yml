@@ -28,19 +28,22 @@ services:
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=wordpress
-  certbot:                                                                                             
-    depends_on:                                                                                        
-      - wordpress                                                                                      
-    image: certbot/certbot                                                                             
-    volumes:                                                                                           
+  certbot:
+    depends_on:
+      - wordpress
+    image: certbot/certbot
+    volumes:
       # we save our directory of keys on our host server                                            
-      - certbot_data:/etc/letsencrypt                                                                
+      - certbot_data:/etc/letsencrypt
       - logs:/var/log
       # we bind our wordpress site to the html root                                                 
-      - /var/www/html                                                                        
+      - /var/www/html
     # this command will generate the certificate.                                                   
     # make sure to change your -d and --email flags                                                 
-    command: certonly --test-cert --webroot --webroot-path=/var/www/html --email simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d butavicius.com -d www.butavicius.com  
+    command: certonly --test-cert --webroot --webroot-path=/var/www/html --email
+      simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d
+      butavicius.com -d www.butavicius.com
 volumes:
   certbot_data: null
   db_data: null
+  logs: null
