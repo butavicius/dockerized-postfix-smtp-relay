@@ -39,7 +39,7 @@ services:
       - /var/www/html                                                                        
     # this command will generate the certificate.                                                   
     # make sure to change your -d and --email flags                                                 
-    command: certonly --webroot --webroot-path=/var/www/html --email simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d butavicius.com -d www.butavicius.com  
+    command: certonly --test-cert --webroot --webroot-path=/var/www/html --email simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d butavicius.com -d www.butavicius.com  
 volumes:
   certbot_data: null
   db_data: null
