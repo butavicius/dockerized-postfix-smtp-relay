@@ -34,7 +34,8 @@ services:
     image: certbot/certbot                                                                             
     volumes:                                                                                           
       # we save our directory of keys on our host server                                            
-      - certbot_data:/etc/letsencrypt                                                                   
+      - certbot_data:/etc/letsencrypt                                                                
+      - logs:/var/log
       # we bind our wordpress site to the html root                                                 
       - /var/www/html                                                                        
     # this command will generate the certificate.                                                   
