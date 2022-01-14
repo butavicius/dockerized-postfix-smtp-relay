@@ -48,3 +48,4 @@ volumes:
   certbot_data: null
   db_data: null
   logs: null
+  wordpress: null
