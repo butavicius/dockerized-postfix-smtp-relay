@@ -27,6 +27,7 @@ fi
 /etc/init.d/postfix start
 
 # enable SSL mod for apache
+echo "Enabling a2enmod"
 a2enmod ssl
 
 # Start wordpress
