@@ -26,5 +26,8 @@ fi
 # Start Postfix daemon
 /etc/init.d/postfix start
 
+# enable SSL mod for apache
+a2enmod ssl
+
 # Start wordpress
 /usr/local/bin/docker-entrypoint.sh apache2-foreground
