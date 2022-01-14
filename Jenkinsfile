@@ -6,9 +6,9 @@ pipeline {
 
     stages {
         stage('Build docker image') {
-            when {
-                branch 'main'
-            }
+            // when {
+            //     branch 'main'
+            // }
 
             steps {
                 sh("set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x")
@@ -23,25 +23,26 @@ pipeline {
             }
         }
         stage('Deploy to Dockerhub') {
-            when {
-                branch 'main'
-            }
+            // when {
+            //     branch 'main'
+            // }
 
             steps {
                 sh("set +x; docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD; set -x")
                 sh("docker push ${img}:latest")
             }
         }
-            stage('Deploy to server') {
-                when {
-                    branch 'main'
-                }
-                steps {
-                    sh("rsync -rz ./* jenkins@${prodServer}:/home/jenkins/repo")
-                    sh("ssh jenkins@${prodServer} \"set +x && \
-                        docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD && \
-                        set -x && cd repo && docker-compose up -d\"")
-                }
+        stage('Deploy to server') {
+            // when {
+            //     branch 'main'
+            // }
+
+            steps {
+                sh("rsync -rz ./* jenkins@${prodServer}:/home/jenkins/repo")
+                sh("ssh jenkins@${prodServer} \"set +x && \
+                    docker login --username \$DOCKER_USERNAME --password \$DOCKER_PASSWORD && \
+                    set -x && cd repo && docker-compose up -d\"")
             }
+        }
     }
 }
