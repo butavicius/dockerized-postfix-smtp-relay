@@ -1,6 +1,6 @@
 FROM wordpress:5.8-apache
 
-RUN en2enmod ssl
+RUN a2enmod ssl
 
 RUN apt-get update && \
     apt-get upgrade -yqq && \
