@@ -1,2 +1,5 @@
 db_data/
 .env
+wp-themes/index.php
+wp-plugins/index.php
+wp-plugins/hello.php
