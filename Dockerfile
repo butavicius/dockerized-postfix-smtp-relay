@@ -2,7 +2,12 @@ FROM wordpress:5.8-apache
 
 RUN a2enmod ssl
 
-RUN apt-get update && \
+# We need to change hostname for this step because postfix generates main.cf with error etherwise:
+# https://bugs.launchpad.net/ubuntu/+source/postfix/+bug/1906970
+
+RUN echo "echo localhost.localdomain" > /usr/bin/hostname && \
+    chmod +x /usr/bin/hostname && \ 
+    apt-get update && \
     apt-get upgrade -yqq && \
     echo "postfix postfix/mailname string $MAILNAME" | debconf-set-selections && \
     echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
