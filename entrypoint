@@ -11,9 +11,13 @@ _stop() {
 trap "_stop" SIGINT SIGTERM SIGHUP
 
 # Enable apache SSL configuration if running on real server
-if [ -n "$HOSTNAME"] && [[ $HOSTNAME != "localhost" ]]; then
+echo "bandom hostnama $HOSTNAME"
+
+if [ -n "$HOSTNAME" ] && [ "$HOSTNAME" != "localhost" ]; then
+    echo "PAVYKO"
     a2enmod ssl
 fi
+echo "BAIGTA"
 
 # Configure mail relay host
 if [ -n "$MAIL_RELAY_HOST" ] && [ -n "$MAIL_RELAY_USER" ] && [ -n "$MAIL_RELAY_PASS" ] && [ -n "$MAIL_RELAY_PORT" ]; then
