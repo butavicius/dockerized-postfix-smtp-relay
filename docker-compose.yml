@@ -15,7 +15,7 @@ services:
     volumes:
       - ./wp-themes:/var/www/html/wp-content/themes
       - ./wp-plugins:/var/www/html/wp-content/plugins
-      - certbot_data:/etc/letsencrypt
+      # - certbot_data:/etc/letsencrypt
       - wordpress:/var/www/html
     ports:
       - "80:80"
@@ -27,25 +27,25 @@ services:
       - WORDPRESS_DB_HOST=db:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-  certbot:
-    depends_on:
-      - wordpress
-    image: certbot/certbot
-    volumes:
-      # we save our directory of keys on our host server                                            
-      - certbot_data:/etc/letsencrypt
-      - logs:/var/log
-      # we bind our wordpress site to the html root                                                 
-      - wordpress:/var/www/html
-    # this command will generate the certificate.                                                   
-    # make sure to change your -d and --email flags                                                 
-    # command should be certonly if there's no certs from previous
-    # command: certonly --webroot --webroot-path=/var/www/html --email
-    #   simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d
-    #   butavicius.com -d www.butavicius.com
-    command: renew
+  # certbot:
+  #   depends_on:
+  #     - wordpress
+  #   image: certbot/certbot
+  #   volumes:
+  #     # we save our directory of keys on our host server                                            
+  #     - certbot_data:/etc/letsencrypt
+  #     - logs:/var/log
+  #     # we bind our wordpress site to the html root                                                 
+  #     - wordpress:/var/www/html
+  #   # this command will generate the certificate.                                                   
+  #   # make sure to change your -d and --email flags                                                 
+  #   # command should be certonly if there's no certs from previous
+  #   # command: certonly --webroot --webroot-path=/var/www/html --email
+  #   #   simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d
+  #   #   butavicius.com -d www.butavicius.com
+  #   command: renew
 volumes:
-  certbot_data: null
+  # certbot_data: null
   db_data: null
   logs: null
   wordpress: null

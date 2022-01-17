@@ -10,19 +10,23 @@ _stop() {
 
 trap "_stop" SIGINT SIGTERM SIGHUP
 
-# Enable apache SSL configuration if running on real server
-echo "bandom hostnama $HOSTNAME"
-
+# Enable apache SSL configuration and get/renew certificate if running on real server
 if [ -n "$HOSTNAME" ] && [ "$HOSTNAME" != "localhost" ]; then
-    echo "PAVYKO"
+
+    if [ -e "/etc/letsencrypt/live/${HOSTNAME}/privkey.pem"]; then
+        certbot renew
+    else
+        certbotcertonly --webroot --webroot-path=/var/www/html --email $ADMIN_EMAIL \
+        --agree-tos --no-eff-email --force-renewal -d ${HOSTNAME} -d www.${HOSTNAME}
+    fi
+
     a2enmod ssl
 fi
-echo "BAIGTA"
 
 # Configure mail relay host
 if [ -n "$MAIL_RELAY_HOST" ] && [ -n "$MAIL_RELAY_USER" ] && [ -n "$MAIL_RELAY_PASS" ] && [ -n "$MAIL_RELAY_PORT" ]; then
     postconf -e relayhost="$MAIL_RELAY_HOST:$MAIL_RELAY_PORT"
-    echo "$MAIL_RELAY_HOST $MAIL_RELAY_USER:$MAIL_RELAY_PASS" > /etc/postfix/sasl_passwd
+    echo "$MAIL_RELAY_HOST $MAIL_RELAY_USER:$MAIL_RELAY_PASS" >/etc/postfix/sasl_passwd
     postmap /etc/postfix/sasl_passwd
 else
     echo '$MAIL_RELAY_PORT, $MAIL_RELAY_HOST, $MAIL_RELAY_USER or $MAIL_RELAY_PASS is not set. Can not configure postfix. Exiting'
