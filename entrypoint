@@ -11,7 +11,7 @@ _stop() {
 trap "_stop" SIGINT SIGTERM SIGHUP
 
 # Enable apache SSL configuration and get/renew certificate if running on real server
-if [ -n "$HOSTNAME" ] && [ "$HOSTNAME" != "localhost" ]; then
+if [ -n "$HOSTNAME" ] && [ "$HOSTNAME" != "localhost" ] && [ -e /etc/letsencrypt/live/${HOSTNAME}/privkey.pem ]; then
     a2enmod ssl
 fi
 
