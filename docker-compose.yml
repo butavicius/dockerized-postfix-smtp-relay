@@ -45,7 +45,7 @@ services:
       # we bind our wordpress site to the html root                                                 
       - wordpress:/var/www/html
     # If certificate exists, renew it. If not,                                               
-    entrypoint: "sh -c 'test -f /etc/letsencrypt/live/${HOSTNAME}/privkey.pem &&
+    entrypoint: "sh -c 'test -f /etc/letsencrypt/live/${HOSTNAME}*/privkey.pem &&
       certbot renew || certbot certonly --test-cert --webroot
       --webroot-path=/var/www/html --email simasbutavicius@gmail.com --agree-tos
       --no-eff-email --force-renewal -d $HOSTNAME -d www.$HOSTNAME'"
