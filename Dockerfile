@@ -1,4 +1,8 @@
 FROM wordpress:5.8-apache
+RUN a2dissite 000-default
+COPY ./apache-conf/http.conf ./apache-conf/https-letsencrypt.conf /etc/apache2/sites-enabled/
+
+# Install postfix
 
 # We need to change hostname for this step because postfix generates main.cf with error etherwise:
 # https://bugs.launchpad.net/ubuntu/+source/postfix/+bug/1906970
@@ -15,11 +19,12 @@ RUN echo "echo localhost.localdomain" > /usr/bin/hostname && \
     apt-get autoremove -yqq && \
     rm -rf /var/cache/apt/archives/* /var/cache/apt/*.bin /var/lib/apt/lists/*
 
-ADD entrypoint sendmail_test /usr/local/bin/
 RUN chmod a+rx /usr/local/bin/* && \
     postconf -e smtp_tls_security_level=may && \
     postconf -e smtp_sasl_auth_enable=yes && \
     postconf -e smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd && \
     postconf -e smtp_sasl_security_options=noanonymous
+
+ADD entrypoint sendmail_test /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
