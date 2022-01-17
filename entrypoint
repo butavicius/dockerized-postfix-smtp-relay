@@ -12,14 +12,6 @@ trap "_stop" SIGINT SIGTERM SIGHUP
 
 # Enable apache SSL configuration and get/renew certificate if running on real server
 if [ -n "$HOSTNAME" ] && [ "$HOSTNAME" != "localhost" ]; then
-
-    if [ -e "/etc/letsencrypt/live/${HOSTNAME}/privkey.pem"]; then
-        certbot renew
-    else
-        certbotcertonly --webroot --webroot-path=/var/www/html --email $ADMIN_EMAIL \
-        --agree-tos --no-eff-email --force-renewal -d ${HOSTNAME} -d www.${HOSTNAME}
-    fi
-
     a2enmod ssl
 fi
 
