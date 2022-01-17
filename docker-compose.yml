@@ -47,7 +47,7 @@ services:
     entrypoint: "test [ -e /etc/letsencrypt/live/${HOSTNAME}/privkey.pem ] \
                 && certbot certonly --webroot --webroot-path=/var/www/html --email simasbutavicius@gmail.com \
                 --agree-tos --no-eff-email --force-renewal --domain ${HOSTNAME} --domain www.${HOSTNAME} \
-                || certbot renew"
+                || certbot renew; docker-compose restart"
 volumes:
   # certbot_data: null
   db_data: null
