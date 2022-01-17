@@ -10,6 +10,11 @@ _stop() {
 
 trap "_stop" SIGINT SIGTERM SIGHUP
 
+# Enable apache SSL configuration if running on real server
+if [ -n "$HOSTNAME"] && [[ $HOSTNAME != "localhost" ]]; then
+    a2enmod ssl
+fi
+
 # Configure mail relay host
 if [ -n "$MAIL_RELAY_HOST" ] && [ -n "$MAIL_RELAY_USER" ] && [ -n "$MAIL_RELAY_PASS" ] && [ -n "$MAIL_RELAY_PORT" ]; then
     postconf -e relayhost="$MAIL_RELAY_HOST:$MAIL_RELAY_PORT"
@@ -26,5 +31,5 @@ fi
 # Start Postfix daemon
 /etc/init.d/postfix start
 
-# Start wordpress
+# Start wordpress. docker-entrypiont.sh comes from wordpress image.
 /usr/local/bin/docker-entrypoint.sh apache2-foreground

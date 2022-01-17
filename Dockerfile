@@ -1,7 +1,5 @@
 FROM wordpress:5.8-apache
 
-RUN a2enmod ssl
-
 # We need to change hostname for this step because postfix generates main.cf with error etherwise:
 # https://bugs.launchpad.net/ubuntu/+source/postfix/+bug/1906970
 
