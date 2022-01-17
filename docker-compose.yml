@@ -15,7 +15,7 @@ services:
     volumes:
       - ./wp-themes:/var/www/html/wp-content/themes
       - ./wp-plugins:/var/www/html/wp-content/plugins
-      - certbot_data:/etc/letsencrypt
+      - ./certbot_data:/etc/letsencrypt
       - wordpress:/var/www/html
     ports:
       - "80:80"
@@ -33,7 +33,7 @@ services:
     image: certbot/certbot
     volumes:
       # we save our directory of keys on our host server                                            
-      - certbot_data:/etc/letsencrypt
+      - ./certbot_data:/etc/letsencrypt
       - logs:/var/log
       # we bind our wordpress site to the html root                                                 
       - wordpress:/var/www/html
