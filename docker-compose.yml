@@ -49,7 +49,7 @@ services:
                 --agree-tos --no-eff-email --force-renewal --domain ${HOSTNAME} --domain www.${HOSTNAME} \
                 || certbot renew; docker-compose restart"
 volumes:
-  # certbot_data: null
+  certbot_data: null
   db_data: null
   logs: null
   wordpress: null
