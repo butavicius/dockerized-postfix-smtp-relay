@@ -44,10 +44,11 @@ services:
     #   simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d
     #   butavicius.com -d www.butavicius.com
     command: renew
-    entrypoint: "test [ -e /etc/letsencrypt/live/${HOSTNAME}/privkey.pem ] \
-                && certbot certonly --webroot --webroot-path=/var/www/html --email simasbutavicius@gmail.com \
-                --agree-tos --no-eff-email --force-renewal --domain ${HOSTNAME} --domain www.${HOSTNAME} \
-                || certbot renew; docker-compose restart"
+    entrypoint: "sh -c 'test -f /etc/letsencrypt/live/${HOSTNAME}/privkey.pem &&
+      certbot renew || certbot certonly --test-cert --webroot
+      --webroot-path=/var/www/html --email simasbutavicius@gmail.com --agree-tos
+      --no-eff-email --force-renewal -d $HOSTNAME -d www.$HOSTNAME'"
+
 volumes:
   certbot_data: null
   db_data: null
