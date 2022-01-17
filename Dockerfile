@@ -13,10 +13,7 @@ RUN echo "echo localhost.localdomain" > /usr/bin/hostname && \
     apt-get upgrade -yqq && \
     echo "postfix postfix/mailname string $MAILNAME" | debconf-set-selections && \
     echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
-    apt-get install -yqq postfix rsyslog iproute2 wget libsasl2-modules vim snapd && \
-    snap install core && \
-    snap refresh core && \
-    ln -s /snap/bin/certbot /usr/bin/certbot && \
+    apt-get install -yqq postfix rsyslog iproute2 wget libsasl2-modules vim && \
     apt-get clean -yqq && \
     apt-get autoclean -yqq && \
     apt-get autoremove -yqq && \
