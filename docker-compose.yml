@@ -27,9 +27,16 @@ services:
       - WORDPRESS_DB_HOST=db:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
   certbot:
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_healthy
     image: certbot/certbot
     volumes:
       # we save our directory of keys on our host server                                            
@@ -37,18 +44,12 @@ services:
       - logs:/var/log
       # we bind our wordpress site to the html root                                                 
       - wordpress:/var/www/html
-    # this command will generate the certificate.                                                   
-    # make sure to change your -d and --email flags                                                 
-    # command should be certonly if there's no certs from previous
-    # command: certonly --webroot --webroot-path=/var/www/html --email
-    #   simasbutavicius@gmail.com --agree-tos --no-eff-email --force-renewal -d
-    #   butavicius.com -d www.butavicius.com
+    # If certificate exists, renew it. If not,                                               
     command: renew
     entrypoint: "sh -c 'test -f /etc/letsencrypt/live/${HOSTNAME}/privkey.pem &&
       certbot renew || certbot certonly --test-cert --webroot
       --webroot-path=/var/www/html --email simasbutavicius@gmail.com --agree-tos
       --no-eff-email --force-renewal -d $HOSTNAME -d www.$HOSTNAME'"
-
 volumes:
   certbot_data: null
   db_data: null
