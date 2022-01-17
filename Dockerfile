@@ -19,12 +19,13 @@ RUN echo "echo localhost.localdomain" > /usr/bin/hostname && \
     apt-get autoremove -yqq && \
     rm -rf /var/cache/apt/archives/* /var/cache/apt/*.bin /var/lib/apt/lists/*
 
+ADD entrypoint sendmail_test /usr/local/bin/
+
 RUN chmod a+rx /usr/local/bin/* && \
     postconf -e smtp_tls_security_level=may && \
     postconf -e smtp_sasl_auth_enable=yes && \
     postconf -e smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd && \
     postconf -e smtp_sasl_security_options=noanonymous
 
-ADD entrypoint sendmail_test /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/entrypoint"]
