@@ -37,6 +37,7 @@ pipeline {
             //     branch 'main'
             // }
 
+            // TODO: If there was no certificate and we got it just now, we have to restart server
             steps {
                 sh("rsync -rz ./* jenkins@${prodServer}:/home/jenkins/repo")
                 sh("ssh jenkins@${prodServer} \"set +x && \
